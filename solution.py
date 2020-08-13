@@ -61,3 +61,19 @@
             last_set = new_set
             all_set.update(set(new_set))      
         return len(all_set)
+# Manacher's Algorithm 
+# 99% not me
+    def countSubstrings(self, s: str) -> int:
+        def manacher(s):
+            t = "&#" + "#".join(s) + "#@"
+            n = len(t)
+            p, c, r, val = [0]*n, 0, 0, 0
+            for i in range(1, n-1):
+                if r > i:
+                    p[i] = min(p[2*c - i], r - i)
+                while t[i+p[i]+1] == t[i-p[i]-1]:
+                    p[i] += 1
+                if i + p[i] > r:
+                    c, r = i, i + p[i]
+            return p
+        return sum((v+1)//2 for v in manacher(s))
