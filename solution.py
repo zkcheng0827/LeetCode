@@ -31,3 +31,33 @@
                 result[i] = stack[-1] - i
             stack.append(i)
         return result
+    
+# 647. Palindromic Substrings
+# bad 28%
+    def countSubstrings(self, s: str) -> int:
+        ret = set([(i, i) for i in range(len(s))])
+        for len_i in range(2, len(s) + 1):
+            for i in range(0, len(s) - len_i + 1):
+                j = i + len_i - 1
+                if s[i] == s[j]:
+                    if len_i <= 2 or (i + 1, j - 1) in ret:
+                        ret.add((i, j))
+        return len(ret)
+# ok 38%
+    def countSubstrings(self, s: str) -> int:
+        size = len(s)
+        if size <= 1:
+            return size
+        last_set = [(i, i) for i in range(len(s))]
+        last_set.extend([(i, i + 1) for i in range(len(s) - 1) if s[i] == s[i + 1]])
+        all_set = set(last_set)
+        while True:
+            new_set = []
+            for i, j in last_set:
+                if j < len(s) - 1 and i > 0 and s[i - 1] == s[j + 1]:
+                    new_set.append((i - 1, j + 1))
+            if len(new_set) == 0:
+                break
+            last_set = new_set
+            all_set.update(set(new_set))      
+        return len(all_set)
