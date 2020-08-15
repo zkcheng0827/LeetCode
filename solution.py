@@ -77,3 +77,17 @@
                     c, r = i, i + p[i]
             return p
         return sum((v+1)//2 for v in manacher(s))
+# 448. Find All Numbers Disappeared in an Array
+# 49%
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+        for i in range(len(nums)):
+            if nums[i] != i + 1:
+                while nums[i] <= len(nums) and nums[nums[i] - 1] != nums[i]:
+                    tmp = nums[i]
+                    nums[i] = nums[tmp - 1]
+                    nums[tmp - 1] = tmp
+        missing = []
+        for i in range(len(nums)):
+            if nums[i] != i + 1:
+                missing.append(i + 1)
+        return missing
