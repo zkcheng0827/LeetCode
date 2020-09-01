@@ -77,6 +77,39 @@
                     c, r = i, i + p[i]
             return p
         return sum((v+1)//2 for v in manacher(s))
+    
+# Merge Two Binary Trees
+# 47%
+    def mergeTrees(self, t1: TreeNode, t2: TreeNode) -> TreeNode:
+        if t1 is None or t2 is None:
+            return t1 if t2 is None else t2
+        else:
+            t1.val += t2.val
+            t1.left = self.mergeTrees(t1.left, t2.left)
+            t1.right = self.mergeTrees(t1.right, t2.right)
+            return t1
+# iterative
+    def mergeTrees(self, t1: TreeNode, t2: TreeNode) -> TreeNode:
+        if t1 is None:
+            return t2
+        stack = []
+        stack.append((t1, t2))
+        while stack:
+            t = stack.pop()
+            if t[1] is None:
+                continue
+            t[0].val += t[1].val
+            if t[0].left is None:
+                t[0].left = t[1].left
+            else:
+                stack.append((t[0].left, t[1].left))
+            if t[0].right is None:
+                t[0].right = t[1].right
+            else:
+                stack.append((t[0].right, t[1].right))
+        return t1
+
+
 # 448. Find All Numbers Disappeared in an Array
 # 49%
     def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
